@@ -35,7 +35,7 @@ const Contacto: React.FC = () => {
       nuevosErrores.mensaje = "El mensaje no puede estar vacío.";
     } else if (mensaje.length < 10) {
       nuevosErrores.mensaje = "El mensaje debe tener al menos 10 caracteres.";
-    } else if (mensaje.length > 200) {
+    } else if (mensaje.length > 100) {
       nuevosErrores.mensaje = "El mensaje no puede superar los 200 caracteres.";
     }
 

@@ -18,6 +18,7 @@ const Contacto: React.FC = () => {
     const nuevosErrores = { nombre: "", email: "", mensaje: "" };
 
     // Validación del nombre
+    // si el nombre está vacío o solo tiene espacios
     if (!nombre.trim()) {
       nuevosErrores.nombre = "El nombre no puede estar vacío.";
     }

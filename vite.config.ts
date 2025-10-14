@@ -1,7 +1,14 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-})
+
+  // 👇 ignoramos la advertencia de TypeScript porque "test" no forma parte del tipo oficial de Vite
+  // @ts-ignore
+  test: {
+    globals: true,                     // permite usar describe, test, expect sin importarlos
+    environment: 'jsdom',              // simula un navegador para los tests de React
+    setupFiles: './src/setupTests.ts', // archivo para configurar librerías antes de los tests
+  },
+});

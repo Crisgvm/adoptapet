@@ -5,6 +5,7 @@ import Nosotros from "./pages/Nosotros";
 import Contacto from "./pages/Contacto";
 import Adopta from "./pages/Adopta";
 import Login from "./pages/Login";
+import Adopciones from "./pages/adopciones";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,7 +23,7 @@ function App() {
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     setIsLoggedIn(false);
-    navigate("/"); // 🔹 redirige al Home sin recargar la página
+    navigate("/"); // redirige al Home sin recargar la página
   };
 
   return (
@@ -51,6 +52,9 @@ function App() {
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/adopta">Adopta</Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="/adopciones">Adopciones</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link" to="/contacto">Contacto</Link>
@@ -84,6 +88,7 @@ function App() {
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/adopta" element={<Adopta />} />
+           <Route path="/adopciones" element={<Adopciones />} />
           <Route
             path="/login"
             element={

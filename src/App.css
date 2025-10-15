@@ -123,3 +123,159 @@ html, body {
 .login-form button:hover {
   background-color: #005fcb;
 }
+
+/* === Estilos para la sección de Adopciones === */
+.adopciones-container {
+  margin-top: 100px; /* separa del navbar fijo */
+  margin-bottom: 80px; /* espacio para footer */
+  width: 100%;
+  max-width: 90%; /* ocupa casi todo el ancho disponible */
+  padding: 20px;
+  color: #000;
+}
+
+/* Título de la sección */
+.adopciones-container h2 {
+  color: #fff;
+  font-weight: 700;
+  margin-bottom: 30px;
+  text-shadow: 1px 1px 4px rgba(247, 242, 242, 0.993);
+}
+
+/* === Sección Adopciones === */
+.adopciones-container {
+  margin-top: 100px;
+  margin-bottom: 80px;
+  width: 90%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #000;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+/* Título general */
+.adopciones-container h2 {
+  width: 100%;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* === Lista de animales === */
+.lista-animales {
+  flex: 1 1 55%;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.lista-animales .list-group-item {
+  font-size: 1.1rem;
+  padding: 12px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background-color: #f8f9fa;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.lista-animales .list-group-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Botones iguales al navbar */
+.lista-animales .btn-sm {
+  font-size: 0.95rem;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  color: #fff;
+  transition: 0.2s;
+}
+
+.lista-animales .btn-sm:first-child {
+  background-color: #0d6efd; /* azul del navbar */
+}
+
+.lista-animales .btn-sm:last-child {
+  background-color: #dc3545; /* rojo para eliminar */
+}
+
+.lista-animales .btn-sm:hover {
+  opacity: 0.85;
+}
+
+/* === Formulario === */
+.formulario-adopcion {
+  flex: 1 1 40%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.formulario-adopcion h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #0d6efd;
+}
+
+.formulario-adopcion input.form-control {
+  font-size: 1rem;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.formulario-adopcion button.btn-primary {
+  background-color: #0d6efd;
+  border: none;
+  font-size: 1.1rem;
+  padding: 10px;
+  width: 100%;
+  border-radius: 8px;
+  color: #fff;
+  transition: 0.2s;
+}
+
+.formulario-adopcion button.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+/* === Responsivo === */
+@media (max-width: 768px) {
+  .adopciones-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .lista-animales,
+  .formulario-adopcion {
+    width: 100%;
+  }
+}
+
+/* === Quitar flechas en inputs tipo number === */
+
+/* Para Chrome, Safari, Edge y Opera */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Para Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}

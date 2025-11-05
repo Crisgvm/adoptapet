@@ -15,8 +15,9 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
   const [errors, setErrors] = useState<{ email?: string; password?: string; login?: string }>({});
   const navigate = useNavigate(); // Trae la función de React Router que permite redireccionar a otra ruta sin recargar la página.
 // función interna que verifica que los campos estén correctos antes de enviar el formulario.
-  const validate = (): boolean => {
-  const newErrors: { email?: string; password?: string } = {};
+  const validate = (): boolean => {//Devuelve un valor de tipo boolean (true o false).
+  const newErrors: { email?: string; password?: string } = {};//es un objeto vacío {} al principio.
+  //Esto crea un objeto temporal donde guardaremos los mensajes de error del formulario.
 
 
     if (!email) { //Comprueba si la variable email está vacía (""), Cadena vacía "",null,undefined

@@ -1,10 +1,12 @@
-import React, { useState } from "react"; //permite manejar valores dinámicos, como los campos del formulario
+import React, { useState } from "react";
+import axios from "axios"; // Librería para realizar peticiones HTTP al backend
 
-// Declara un componente funcional llamado Contacto, significa React Functional Component, y le dice a TypeScript que Home es un componente de React.
+// Declara un componente funcional llamado Contacto, significa React Functional Component, y le dice a TypeScript que Contacto es un componente de React.
 const Contacto: React.FC = () => {
-  const [nombre, setNombre] = useState(""); //React actualiza el estado y vuelve a renderizar el componente con el nuevo valor.
+  // useState permite manejar valores dinámicos, como los campos del formulario
+  const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
-  const [mensaje, setMensaje] = useState(""); //useState("") crea un estado inicial vacío para mensaje.
+  const [mensaje, setMensaje] = useState("");
 
   // Estados para manejar los mensajes de error
   const [errores, setErrores] = useState({
@@ -13,12 +15,14 @@ const Contacto: React.FC = () => {
     mensaje: "",
   });
 
-  // Función que valida los campos y actualiza los errores
+  // Estado para mostrar mensajes de confirmación o error general del envío
+  const [estadoEnvio, setEstadoEnvio] = useState("");
+
+  // ---------------- VALIDACIÓN DEL FORMULARIO ----------------
   const validarFormulario = () => {
     const nuevosErrores = { nombre: "", email: "", mensaje: "" };
 
     // Validación del nombre
-    // si el nombre está vacío o solo tiene espacios
     if (!nombre.trim()) {
       nuevosErrores.nombre = "El nombre no puede estar vacío.";
     }
@@ -36,30 +40,48 @@ const Contacto: React.FC = () => {
       nuevosErrores.mensaje = "El mensaje no puede estar vacío.";
     } else if (mensaje.length < 10) {
       nuevosErrores.mensaje = "El mensaje debe tener al menos 10 caracteres.";
-    } else if (mensaje.length > 100) {
+    } else if (mensaje.length > 200) {
       nuevosErrores.mensaje = "El mensaje no puede superar los 200 caracteres.";
     }
 
     setErrores(nuevosErrores);
+    return nuevosErrores;
   };
 
-  // Función que maneja el envío del formulario, evita que la página se recargue y procesa los datos ingresados
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  // ---------------- FUNCIÓN DE ENVÍO ----------------
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault(); // Evita que la página se recargue
+    const nuevosErrores = validarFormulario(); // Ejecuta la validación
 
-    validarFormulario();
+    // Verifica si hay errores antes de enviar
+    if (nuevosErrores.nombre || nuevosErrores.email || nuevosErrores.mensaje) {
+      setEstadoEnvio("Por favor corrige los errores antes de enviar.");
+      return;
+    }
 
-    // Solo enviar si no hay errores
-    if (!errores.nombre && !errores.email && !errores.mensaje) {
-      alert(`Gracias ${nombre}, tu mensaje ha sido enviado!`); //Todo lo que pongas dentro de ${} se evalúa y se reemplaza por su valor.
-      setNombre("");
-      setEmail("");
-      setMensaje("");
-      setErrores({ nombre: "", email: "", mensaje: "" }); // Limpia los mensajes de error
+    try {
+      // Si no hay errores, se envían los datos al microservicio Spring Boot
+      const response = await axios.post("http://localhost:8080/contacto/guardar", {
+        nombre,
+        email,
+        mensaje,
+      });
+
+      // Si el servidor responde correctamente
+      if (response.status === 200 || response.status === 201) {
+        setEstadoEnvio("✅ Mensaje enviado correctamente.");
+        setNombre("");
+        setEmail("");
+        setMensaje("");
+        setErrores({ nombre: "", email: "", mensaje: "" }); // Limpia errores
+      }
+    } catch (error) {
+      console.error("Error al enviar el mensaje:", error);
+      setEstadoEnvio("❌ Ocurrió un error al enviar el mensaje. Inténtalo nuevamente.");
     }
   };
 
-  // Variable que evalúa si hay errores o campos vacíos para deshabilitar el botón
+  // ---------------- DESHABILITAR BOTÓN ----------------
   const botonDeshabilitado =
     !nombre.trim() ||
     !email.trim() ||
@@ -68,18 +90,15 @@ const Contacto: React.FC = () => {
     !!errores.email ||
     !!errores.mensaje;
 
+  // ---------------- INTERFAZ ----------------
   return (
     <div className="main-content">
-      <h1 className="text-white fw-bold display-5 mb-3">Contacto 📬</h1>
+      <h1 className="text-white fw-bold display-5 mb-3">Contacto</h1>
       <p className="lead text-white mb-4">
         Completa el formulario y nos pondremos en contacto contigo.
       </p>
 
-      <form
-        onSubmit={handleSubmit}
-        className="w-100"
-        style={{ maxWidth: "500px" }}
-      >
+      <form onSubmit={handleSubmit} className="w-100" style={{ maxWidth: "500px" }}>
         {/* Campo Nombre */}
         <div className="mb-3">
           <label htmlFor="nombre" className="form-label text-white">
@@ -91,14 +110,11 @@ const Contacto: React.FC = () => {
             className="form-control"
             value={nombre}
             onChange={(e) => {
-              setNombre(e.target.value); // evento que captura la informacion
-              validarFormulario(); // validar mientras escribe
+              setNombre(e.target.value);
+              validarFormulario();
             }}
           />
-          {/* Mensaje de error para nombre */}
-          {errores.nombre && (
-            <p className="text-danger mt-1">{errores.nombre}</p>
-          )}
+          {errores.nombre && <p className="text-danger mt-1">{errores.nombre}</p>}
         </div>
 
         {/* Campo Email */}
@@ -113,10 +129,9 @@ const Contacto: React.FC = () => {
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              validarFormulario(); // validar mientras escribe
+              validarFormulario();
             }}
           />
-          {/* Mensaje de error para email */}
           {errores.email && <p className="text-danger mt-1">{errores.email}</p>}
         </div>
 
@@ -131,25 +146,21 @@ const Contacto: React.FC = () => {
             value={mensaje}
             onChange={(e) => {
               setMensaje(e.target.value);
-              validarFormulario(); // validar mientras escribe
+              validarFormulario();
             }}
             rows={4}
           ></textarea>
-          {/* Mensaje de error para mensaje */}
-          {errores.mensaje && (
-            <p className="text-danger mt-1">{errores.mensaje}</p>
-          )}
+          {errores.mensaje && <p className="text-danger mt-1">{errores.mensaje}</p>}
         </div>
 
         {/* Botón de envío */}
-        <button
-          type="submit"
-          className="btn btn-light w-100"
-          disabled={botonDeshabilitado}
-        >
+        <button type="submit" className="btn btn-light w-100" disabled={botonDeshabilitado}>
           Enviar
         </button>
       </form>
+
+      {/* Mensaje general de envío */}
+      {estadoEnvio && <p className="text-white mt-3">{estadoEnvio}</p>}
     </div>
   );
 };
